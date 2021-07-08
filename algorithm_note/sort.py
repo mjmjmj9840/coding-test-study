@@ -71,3 +71,18 @@ def countSort(array):
 # 시간복잡도: O(N + K)
 # N: 데이터의 개수
 # K: 데이터의 최댓값
+
+
+
+
+''' 파이썬 정렬 라이브러리 '''
+
+# 기본적인 정렬
+array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
+result = sorted(array)
+array.sort()
+
+
+# key값을 주고 정렬
+array = [('바나나', 2), ('사과', 5), ('당근', 3)]
+array.sort(key = lambda x: x[1])
