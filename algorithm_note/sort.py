@@ -49,3 +49,25 @@ def quickSort(array):
 
 # 평균 시간복잡도: O(NlogN)
 # 최악의 경우: O(N^2)
+
+
+
+
+''' 계수 정렬 '''
+
+def countSort(array):
+  count = [0] * (max(array) + 1)
+
+  for x in array:
+    count[x] += 1
+
+  result = []
+  for i in range(len(count)):
+    for j in range(count[i]):
+      result.append(i)
+
+  return result
+
+# 시간복잡도: O(N + K)
+# N: 데이터의 개수
+# K: 데이터의 최댓값
