@@ -29,3 +29,23 @@ def ins_sort(array):
 
 # 시간복잡도: O(N^2)
 # 최선의 경우: O(N)
+
+
+
+
+''' 퀵 정렬 '''
+
+def quickSort(array):
+  if len(array) <= 1:
+    return array
+
+  pivot = array[0]
+  tail = array[1:]
+
+  leftSide = [x for x in tail if x <= pivot]
+  rightSide = [x for x in tail if x > pivot]
+
+  return quickSort(leftSide) + [pivot] + quickSort(rightSide)
+
+# 평균 시간복잡도: O(NlogN)
+# 최악의 경우: O(N^2)
