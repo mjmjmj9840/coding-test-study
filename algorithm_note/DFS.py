@@ -24,3 +24,6 @@ graph = [
 ]
 visited = [False] * 9
 dfs(graph, 1, visited)
+
+
+# 시간 복잡도: O(V + E)
