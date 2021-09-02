@@ -52,6 +52,7 @@ def solution(orders, course):
     for course_size in course:
         order_combinations = []
         for order in orders:
+        
             order_combinations += itertools.combinations(sorted(order), course_size)
 
         most_ordered = collections.Counter(order_combinations).most_common()
