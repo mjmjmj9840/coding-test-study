@@ -1,70 +1,44 @@
-# 자물쇠와 열쇠
-
-# NxN 2차원 리스트 d도 회전
-# 회전 각도 d => 1: 90도, 2: 180도, 3: 270도
-def rotate(array, d):
-    n = len(array)  # 배열의 길이
-    result = [[0] * n for _ in range(n)]
-
-    if d % 4 == 1:
-        for r in range(n):
-            for c in range(n):
-                result[c][n - r - 1] = array[r][c]
-    elif d % 4 == 2:
-        for r in range(n):
-            for c in range(n):
-                result[n - r - 1][n - c - 1] = array[r][c]
-    elif d % 4 == 3:
-        for r in range(n):
-            for c in range(n):
-                result[n - c - 1][r] = array[r][c]
-    else:
-        for r in range(n):
-            for c in range(n):
-                result[r][c] = array[r][c]
+# key를 시계 방향 90도 회전
+def rotate(key, m):
+    result = [[0] * m for _ in range(m)]
+    for i in range(m):
+        for j in range(m):
+            result[i][j] = key[j][m - i - 1]
 
     return result
 
 
-# 자물쇠 중간 NxN 부분이 모두 1인지 확인
-def check(new_lock):
-    n = len(new_lock) // 3
-    for i in range(n, n * 2):
-        for j in range(n, n * 2):
-            if new_lock[i][j] != 1:
+# key를 더하거나 빼기
+def useKey(i, j, key, my_lock, op):
+    for x in range(len(key)):
+        for y in range(len(key)):
+            my_lock[i + x][j + y] += key[x][y] * op
+
+
+# 자물쇠가 모두 열렸는지 확인
+def isOpen(my_lock, n):
+    for i in range(n):
+        for j in range(n):
+            if my_lock[n + i][n + j] != 1:
                 return False
     return True
 
 
 def solution(key, lock):
-    m = len(key)
-    n = len(lock)
-    # 기존 자물쇠보다 3배 큰 자물쇠
-    new_lock = [[0] * (n * 3) for _ in range(n * 3)]
-    # 새로운 자물쇠의 중앙 부분에 기존 자물쇠 넣기
+    n, m = len(lock), len(key)
+    my_lock = [[0] * 3 * n for _ in range(3 * n)]  # 기존 자물쇠의 3배 크기 좌물쇠 만들기
+    # 새로운 자물쇠 중앙에 lock 복사
     for i in range(n):
         for j in range(n):
-            new_lock[n + i][n + j] = lock[i][j]
+            my_lock[i + n][j + n] = lock[i][j]
 
-    # 열쇠를 (1, 1)부터 (N*2, N*2)까지 이동시키며 확인
-    for i in range(1, n * 2):
-        for j in range(1, n * 2):
-            # 열쇠를 0, 90, 180, 270도로 회전시키며 확인
-            for d in range(4):
-                r_key = rotate(key, d)  # key를 d만큼 회전시킨 리스트
-                print(r_key)
-                for x in range(m):
-                    for y in range(m):
-                        new_lock[i + x][j + y] += r_key[x][y]
-
-                if check(new_lock):
+    for r in range(4):  # 네방향 회전
+        for i in range(1, 2 * n):
+            for j in range(1, 2 * n):
+                useKey(i, j, key, my_lock, 1)  # key 더하기
+                if isOpen(my_lock, n):
                     return True
-
-                for x in range(m):
-                    for y in range(m):
-                        new_lock[i + x][j + y] -= r_key[x][y]
+                useKey(i, j, key, my_lock, -1)  # key 빼기
+        key = rotate(key, m)
 
     return False
-
-
-print(solution([[0, 0, 0], [1, 0, 0], [0, 1, 1]], [[1, 1, 1], [1, 1, 0], [1, 0, 1]]	))
