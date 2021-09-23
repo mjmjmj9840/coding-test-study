@@ -1,26 +1,27 @@
-# 외벽 점검
-
+# 다시 푼 풀이
 from itertools import permutations
+
 
 def solution(n, weak, dist):
     answer = len(dist) + 1
-    length = len(weak)  # 취약 지점의 개수
-    for i in range(length):  # 원형을 일자 형태로 전환
-      weak.append(weak[i] + n)
+    weak_cnt = len(weak)  # 취약 지점 개수
+    for i in range(weak_cnt):  # 취약 지점을 직선으로 표현
+        weak.append(weak[i] + n)
 
-    for start in range(length):
-      # 친구를 나열하는 모든 방법
-      for friends in list(permutations(dist, len(dist))):
-        count = 1  # 외벽 점검에 보낼 친구 수
-        visit = weak[start] + friends[count - 1]  # 점검 가능한 위치 중 가장 큰 값
-        # 점검해야할 모든 외벽 검사
-        for i in range(start, start + length):
-          if weak[i] > visit:
-            count += 1  # 친구 추가
-            if count > len(dist):
-              break  # 모든 외벽 점검 불가
-            visit = weak[i] + friends[count - 1]  # 점검 가능 위치 갱신
-            
-        answer = min(answer, count)  # 보내야하는 최소 친구 수
+    for start in range(weak_cnt):  # 점검 시작 위치
+        end = start + weak_cnt  # 점검 종료 위치
+
+        for friend in list(permutations(dist, len(dist))):  # 친구를 보내는 순서
+            checked = weak[start] - 1  # 점검 완료 지점
+            f_idx = 0
+            for i in range(start, end):
+                if weak[i] > checked:  # 다음 친구를 보냄
+                    if f_idx >= len(dist):  # 취약 지점을 전부 점검할 수 없는 경우
+                        f_idx += 1
+                        break
+                    checked = weak[i] + friend[f_idx]
+                    f_idx += 1
+
+            answer = min(answer, f_idx)
 
     return answer if answer <= len(dist) else -1
