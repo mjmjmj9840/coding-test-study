@@ -1,3 +1,5 @@
+# 210927 재풀이
+
 def solution(N, stages):
     not_clear_player = [0] * (N + 2)  # 스테이지에 도달했으나 아직 클리어하지 못한 플레이어 수
     total_player = [0] * (N + 2)  # 스테이지에 도달한 플레이어 수
@@ -20,8 +22,3 @@ def solution(N, stages):
     answer = [stage for stage, _ in fail]
 
     return answer
-
-
-N = 5
-stages = [2, 1, 2, 6, 2, 4, 3, 3]
-print(solution(N, stages))
